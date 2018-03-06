@@ -43,7 +43,7 @@ class BurgerBuilder extends Component {
   }
 
   addIngredientHandler = (type) => {
-    const updatedCount = ++this.state.ingredients[type];
+    const updatedCount = this.state.ingredients[type] + 1;
     const updatedIngredients = {
       ...this.state.ingredients
     };
@@ -54,7 +54,7 @@ class BurgerBuilder extends Component {
   }
 
   removeIngredientHandler = (type) => {
-    const updatedCount = --this.state.ingredients[type];
+    const updatedCount = this.state.ingredients[type] - 1;
     const updatedIngredients = {
       ...this.state.ingredients
     };
