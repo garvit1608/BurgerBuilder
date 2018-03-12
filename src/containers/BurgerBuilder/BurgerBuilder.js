@@ -73,24 +73,41 @@ class BurgerBuilder extends Component {
   }
 
   purchaseContinueHandler = () => {
-    this.setState({loading: true});
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Garvit',
-        address: {
-          street: 'street 1',
-          country: 'India'
-        },
-        email: 'test@gmail.com'
-      },
-      deliveryMethod: 'urgent'
+    // this.setState({loading: true});
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: 'Garvit',
+    //     address: {
+    //       street: 'street 1',
+    //       country: 'India'
+    //     },
+    //     email: 'test@gmail.com'
+    //   },
+    //   deliveryMethod: 'urgent'
+    // }
+    // axios.post('/orders.json', order)
+    //   .then(response => console.log(response))
+    //   .catch(error => console.log(error))
+    //   .finally(() => this.setState({loading: false, purchasing: false}));
+    const queryParams = [];
+
+    for ( let i in this.state.ingredients ) {
+      queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
     }
-    axios.post('/orders.json', order)
-      .then(response => console.log(response))
-      .catch(error => console.log(error))
-      .finally(() => this.setState({loading: false, purchasing: false}));
+
+    const queryString = queryParams.join('&');
+
+    this.props.history.push({
+      pathname: '/checkout',
+      search: '?' + queryString
+    });
+
+  }
+
+  componentDidMount() {
+    console.log(this.props);
   }
 
   render() {
@@ -102,12 +119,12 @@ class BurgerBuilder extends Component {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
 
-    let orderSummary =  <OrderSummary
+    let orderSummary =  (<OrderSummary
                           ingredients={this.state.ingredients}
                           purchaseCancelled={this.purchaseCancelHandler}
                           purchaseContinue={this.purchaseContinueHandler}
                           price={this.state.totalPrice}
-                        />
+                        />);
 
     if (this.state.loading) {
       orderSummary = <Spinner />
